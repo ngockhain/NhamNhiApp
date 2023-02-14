@@ -6,6 +6,7 @@ import {
   IconButton, Pressable, Text, Center, Box, StatusBar,
   Divider
 } from "native-base";
+import CustomBarChart from "./component/CustomBarChart";
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -161,7 +162,7 @@ export default function App() {
           <Drawer.Navigator
             drawerContent={(props) => <CustomDrawerContent {...props} />}
           >
-            <Drawer.Screen name="Thống kê" component={Component} />
+            <Drawer.Screen name="Thống kê" component={CustomBarChart} />
             <Drawer.Screen name="Thêm dữ liệu" component={Component} />
             <Drawer.Screen name="Thêm loại" component={Component} />
           </Drawer.Navigator>
