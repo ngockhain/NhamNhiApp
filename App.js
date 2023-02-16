@@ -6,7 +6,6 @@ import {
   IconButton, Pressable, Text, Center, Box, StatusBar,
   Divider
 } from "native-base";
-import CustomBarChart from "./component/CustomBarChart";
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -15,6 +14,7 @@ import {
   createDrawerNavigator,
   DrawerContentScrollView,
 } from "@react-navigation/drawer";
+import MainPage from "./component/MainPage";
 
 const Drawer = createDrawerNavigator();
 
@@ -162,7 +162,7 @@ export default function App() {
           <Drawer.Navigator
             drawerContent={(props) => <CustomDrawerContent {...props} />}
           >
-            <Drawer.Screen name="Thống kê" component={CustomBarChart} />
+            <Drawer.Screen name="Thống kê" component={MainPage} />
             <Drawer.Screen name="Thêm dữ liệu" component={Component} />
             <Drawer.Screen name="Thêm loại" component={Component} />
           </Drawer.Navigator>

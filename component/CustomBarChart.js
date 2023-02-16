@@ -1,5 +1,6 @@
 import { ScrollView } from 'native-base';
 import { StyleSheet, Text, View } from 'react-native';
+import { useState, useEffect } from 'react';
 import { Dimensions } from "react-native";
 import {
   VictoryChart, VictoryBar,
@@ -10,24 +11,26 @@ import {
 
 export default function CustomBarChart() {
 
-  const data = [
-    { x: 'Loại 1', y: 50, color: "red" },
-    { x: 'Loại 2', y: 25, color: "blue" },
-    { x: 'Loại 3', y: 60, color: "red" },
-    { x: 'Loại 4', y: 50, color: "red" },
-    { x: 'Loại 5', y: 35, color: "red" },
-    { x: 'Loại 6', y: 50, color: "red" },
-    { x: 'Loại 7', y: 25, color: "red" },
-    { x: 'Loại 8', y: 60, color: "red" },
-    { x: 'Loại 9', y: 50, color: "red" }
-  ];
+  const [data, setData] = useState(
+    [
+      { x: 'Loại 1', y: 35, color: "red" },
+      { x: 'Loại 2', y: 25, color: "blue" },
+      { x: 'Loại 3', y: 60, color: "red" },
+      { x: 'Loại 4', y: 50, color: "red" },
+      { x: 'Loại 5', y: 35, color: "red" },
+      { x: 'Loại 6', y: 50, color: "red" },
+      { x: 'Loại 7', y: 25, color: "red" },
+      { x: 'Loại 8', y: 60, color: "red" },
+      { x: 'Loại 9', y: 50, color: "red" }
+    ]
+  );
 
   return (
     <ScrollView>
       <VictoryChart
         theme={VictoryTheme.material}
         domainPadding={{ x: 20 }}
-        // domain={{ y: [0, 250] }}
+      // domain={{ y: [0, 250] }}
       >
         <VictoryAxis dependentAxis />
         <VictoryAxis
