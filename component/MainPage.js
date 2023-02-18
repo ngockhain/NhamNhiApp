@@ -13,7 +13,7 @@ export default function MainPage() {
   return (
     <Tab.Navigator>
       <Tab.Screen name="Theo ngày" component={CustomBarChart} />
-      <Tab.Screen name="Theo tháng" component={CustomStackBarChart} />
+      <Tab.Screen name="Theo tuần" component={CustomStackBarChart} />
     </Tab.Navigator>
   );
 }

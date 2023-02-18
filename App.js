@@ -15,6 +15,7 @@ import {
   DrawerContentScrollView,
 } from "@react-navigation/drawer";
 import MainPage from "./component/MainPage";
+import AddDataPage from "./component/AddDataPage";
 
 const Drawer = createDrawerNavigator();
 
@@ -163,7 +164,7 @@ export default function App() {
             drawerContent={(props) => <CustomDrawerContent {...props} />}
           >
             <Drawer.Screen name="Thống kê" component={MainPage} />
-            <Drawer.Screen name="Thêm dữ liệu" component={Component} />
+            <Drawer.Screen name="Thêm dữ liệu" component={AddDataPage} />
             <Drawer.Screen name="Thêm loại" component={Component} />
           </Drawer.Navigator>
         </Box>
