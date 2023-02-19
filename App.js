@@ -16,6 +16,7 @@ import {
 } from "@react-navigation/drawer";
 import MainPage from "./component/MainPage";
 import AddDataPage from "./component/AddDataPage";
+import AddCategoryPage from "./component/AddCategoryPage";
 
 const Drawer = createDrawerNavigator();
 
@@ -74,6 +75,7 @@ export function CustomDrawerContent(props) {
                 onPress={(event) => {
                   props.navigation.navigate(name);
                 }}
+                key={index}
               >
                 <HStack space="7" alignItems="center">
                   <Icon
@@ -165,7 +167,7 @@ export default function App() {
           >
             <Drawer.Screen name="Thống kê" component={MainPage} />
             <Drawer.Screen name="Thêm dữ liệu" component={AddDataPage} />
-            <Drawer.Screen name="Thêm loại" component={Component} />
+            <Drawer.Screen name="Thêm loại" component={AddCategoryPage} />
           </Drawer.Navigator>
         </Box>
       </NativeBaseProvider>
