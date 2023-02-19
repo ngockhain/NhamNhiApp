@@ -6,8 +6,10 @@ import {
   FormControl, Stack, Input, Select, CheckIcon
 } from "native-base";
 
-import { ColorPicker } from 'react-native-color-picker'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { ColorPicker, TriangleColorPicker } from 'react-native-color-picker';
+import { Slider } from '@react-native-community/slider';
+import Collapsible from 'react-native-collapsible';
 
 const LinearGradient = require('expo-linear-gradient').LinearGradient;
 const config = {
@@ -18,7 +20,7 @@ const config = {
 
 function AddCategoryComponent() {
   const [openCategoryModal, setOpenCategoryModal] = useState(false);
-
+  const [showColorPicker, setShowColorPicker] = useState(false);
   return (
     <>
       <Pressable onPress={() => setOpenCategoryModal(true)}>
@@ -53,9 +55,12 @@ function AddCategoryComponent() {
                 }} _dark={{
                   placeholderTextColor: "blueGray.100"
                 }} />
-                <ColorPicker
+                <TriangleColorPicker
                   onColorSelected={color => alert(`Color selected: ${color}`)}
-                  style={{ flex: 1 }}
+                  // style={{ flex: 1 }}
+                  hideControls
+                  sliderComponent={Slider}
+                  style={{ width: "100%" }}
                 />
                 <Input m={1} placeholder="icon pladeholder" />
               </Stack>
