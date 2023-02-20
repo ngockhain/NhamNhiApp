@@ -5,11 +5,10 @@ import {
   Divider, NativeBaseProvider, Container, Modal, Button,
   FormControl, Stack, Input, Select, CheckIcon
 } from "native-base";
+import rgbHex from 'rgb-hex';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { ColorPicker, TriangleColorPicker } from 'react-native-color-picker';
-import { Slider } from '@react-native-community/slider';
-import Collapsible from 'react-native-collapsible';
+import IconShowComponent from './IconShowComponent';
 
 const LinearGradient = require('expo-linear-gradient').LinearGradient;
 const config = {
@@ -20,7 +19,9 @@ const config = {
 
 function AddCategoryComponent() {
   const [openCategoryModal, setOpenCategoryModal] = useState(false);
-  const [showColorPicker, setShowColorPicker] = useState(false);
+  const [redComp, setRedComp] = useState(65);
+  const [greenComp, setGreenComp] = useState(131);
+  const [blueComp, setBlueComp] = useState(196);
   return (
     <>
       <Pressable onPress={() => setOpenCategoryModal(true)}>
@@ -55,14 +56,31 @@ function AddCategoryComponent() {
                 }} _dark={{
                   placeholderTextColor: "blueGray.100"
                 }} />
-                <TriangleColorPicker
-                  onColorSelected={color => alert(`Color selected: ${color}`)}
-                  // style={{ flex: 1 }}
-                  hideControls
-                  sliderComponent={Slider}
-                  style={{ width: "100%" }}
-                />
-                <Input m={1} placeholder="icon pladeholder" />
+                <HStack alignItems={"center"} justifyContent="space-around">
+                  <Text style={{ fontSize: 12 }}>Màu sắc</Text>
+                  <Text style={{
+                    fontSize: 12,
+                    backgroundColor: `#${rgbHex(redComp, greenComp, blueComp)}`
+                  }}>#{rgbHex(redComp, greenComp, blueComp)}</Text>
+
+                  <Input width={"10%"} m={1} variant="underlined" size="sm" placeholder="r" _light={{
+                    placeholderTextColor: "blueGray.700"
+                  }} _dark={{
+                    placeholderTextColor: "blueGray.100"
+                  }} />
+                  <Input width={"10%"} m={1} variant="underlined" size="sm" placeholder="g" _light={{
+                    placeholderTextColor: "blueGray.700"
+                  }} _dark={{
+                    placeholderTextColor: "blueGray.100"
+                  }} />
+                  <Input width={"10%"} m={1} variant="underlined" size="sm" placeholder="b" _light={{
+                    placeholderTextColor: "blueGray.700"
+                  }} _dark={{
+                    placeholderTextColor: "blueGray.100"
+                  }} />
+
+                </HStack>
+                <IconShowComponent />
               </Stack>
             </FormControl>
           </Modal.Body>
