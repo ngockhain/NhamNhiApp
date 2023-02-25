@@ -6,9 +6,11 @@ import {
   FormControl, Stack, Input, Select, ChevronUpIcon,
   ChevronDownIcon
 } from "native-base";
+import { useForm, Controller } from "react-hook-form";
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Alert } from 'react-native';
 
 const LinearGradient = require('expo-linear-gradient').LinearGradient;
 const config = {
@@ -19,13 +21,7 @@ const config = {
 
 function AddDataComponent() {
   const [openAddDataModal, setOpenAddDataModal] = useState(false);
-
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
-    { label: 'Apple', value: 'apple' },
-    { label: 'Banana', value: 'banana' }
-  ]);
+  const { control, handleSubmit, getValues, formState: { errors } } = useForm();
 
   return (
     <>
@@ -67,45 +63,114 @@ function AddDataComponent() {
             <FormControl isRequired isInvalid>
               <Stack w="100%">
                 <HStack flex={1} justifyContent="space-between">
-                  <Input width="63%" variant="underlined" size="sm" placeholder="Ngày" _light={{
-                    placeholderTextColor: "blueGray.700"
-                  }} _dark={{
-                    placeholderTextColor: "blueGray.100"
-                  }} />
+                  {/* ----- 日付 ----- */}
+                  <Controller
+                    control={control}
+                    render={({ field: { onChange, onBlur, value } }) => (
+                      <Input width="63%" variant="underlined" size="sm" placeholder="Ngày"
+                        _light={{
+                          placeholderTextColor: "blueGray.700"
+                        }} _dark={{
+                          placeholderTextColor: "blueGray.100"
+                        }}
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                      />
+                    )}
+                    name="date"
+                    defaultValue=""
+                  />
+                  {/* Date Input Contoller */}
+                  {/* <FormControl.ErrorMessage>
+                    {errors.thought?.message}
+                  </FormControl.ErrorMessage> */}
                   {/* <DateTimePicker value={new Date()} /> */}
-                  <Input width="33%" variant="underlined" size="sm" placeholder="Giờ" _light={{
-                    placeholderTextColor: "blueGray.700"
-                  }} _dark={{
-                    placeholderTextColor: "blueGray.100"
-                  }} />
-                </HStack>
 
-                <Select variant="underlined"
-                  selectedValue={"ux"}
-                  placeholder="Loại chi tiêu"
-                  _selectedItem={{
-                    bg: "blueGray.700",
-                    // endIcon: <CheckIcon size="2" />
-                  }}
-                  dropdownOpenIcon={<ChevronUpIcon size="3" />}
-                  dropdownCloseIcon={<ChevronDownIcon size="3" />}
-                  onValueChange={() => { }}>
-                  <Select.Item label="UX Research" value="ux" />
-                  <Select.Item label="Web Development" value="web" />
-                  <Select.Item label="Cross Platform Development" value="cross" />
-                  <Select.Item label="UI Designing" value="ui" />
-                  <Select.Item label="Backend Development" value="backend" />
-                </Select>
-                <Input variant="underlined" size="sm" placeholder="Số tiền" _light={{
-                  placeholderTextColor: "blueGray.700"
-                }} _dark={{
-                  placeholderTextColor: "blueGray.100"
-                }} />
-                <Input variant="underlined" size="sm" placeholder="Ghi chú" _light={{
-                  placeholderTextColor: "blueGray.700"
-                }} _dark={{
-                  placeholderTextColor: "blueGray.100"
-                }} />
+                  {/* ----- 時間 ----- */}
+                  <Controller
+                    control={control}
+                    render={({ field: { onChange, onBlur, value } }) => (
+                      <Input width="33%" variant="underlined" size="sm" placeholder="Giờ"
+                        _light={{
+                          placeholderTextColor: "blueGray.700"
+                        }} _dark={{
+                          placeholderTextColor: "blueGray.100"
+                        }}
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                      />
+                    )}
+                    name="time"
+                    defaultValue=""
+                  />
+                </HStack>
+                {/* ----- 使用タイプ ----- */}
+                <Controller
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <Select variant="underlined"
+                      selectedValue={value}
+                      onValueChange={(itemValue) => {
+                        onChange(itemValue);
+                      }}
+                      placeholder="Loại chi tiêu"
+                      _selectedItem={{
+                        bg: "blueGray.700",
+                        // endIcon: <CheckIcon size="2" />
+                      }}
+                      dropdownOpenIcon={<ChevronUpIcon size="3" />}
+                      dropdownCloseIcon={<ChevronDownIcon size="3" />}>
+                      <Select.Item label="UX Research" value="ux" />
+                      <Select.Item label="Web Development" value="web" />
+                      <Select.Item label="Cross Platform Development" value="cross" />
+                      <Select.Item label="UI Designing" value="ui" />
+                      <Select.Item label="Backend Development" value="backend" />
+                    </Select>
+                  )}
+                  name="consumeType"
+                  // rules={{ required: 'Field is required' }}
+                  defaultValue="ux"
+                />
+
+                {/* ----- 金額 ----- */}
+                <Controller
+                  control={control}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <Input variant="underlined" size="sm" placeholder="Số tiền"
+                      _light={{
+                        placeholderTextColor: "blueGray.700"
+                      }} _dark={{
+                        placeholderTextColor: "blueGray.100"
+                      }}
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                    />
+                  )}
+                  name="money"
+                  defaultValue=""
+                />
+
+                {/* ----- 備考 ----- */}
+                <Controller
+                  control={control}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <Input variant="underlined" size="sm" placeholder="Ghi chú"
+                      _light={{
+                        placeholderTextColor: "blueGray.700"
+                      }} _dark={{
+                        placeholderTextColor: "blueGray.100"
+                      }}
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                    />
+                  )}
+                  name="memo"
+                  defaultValue=""
+                />
               </Stack>
             </FormControl>
           </Modal.Body>
@@ -114,7 +179,7 @@ function AddDataComponent() {
               <Button colorScheme="secondary" onPress={() => { setOpenAddDataModal(false); }}>
                 Xóa
               </Button>
-              <Button colorScheme="primary" onPress={() => { setOpenAddDataModal(false); }}>
+              <Button colorScheme="primary" onPress={() => { Alert.alert(JSON.stringify(getValues())); setOpenAddDataModal(false); }}>
                 OK
               </Button>
             </Button.Group>
