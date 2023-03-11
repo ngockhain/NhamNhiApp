@@ -12,20 +12,13 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Alert } from 'react-native';
 
-const LinearGradient = require('expo-linear-gradient').LinearGradient;
-const config = {
-  dependencies: {
-    'linear-gradient': LinearGradient
-  }
-};
-
-function AddDataComponent() {
+export default function ExpenseComponent() {
   const [openAddDataModal, setOpenAddDataModal] = useState(false);
   const { control, handleSubmit, getValues, formState: { errors } } = useForm();
 
   return (
     <>
-      <Pressable onPress={() => setOpenAddDataModal(true)}>
+      <Pressable m={1} onPress={() => setOpenAddDataModal(true)}>
         <HStack
           bg={{
             linearGradient: {
@@ -188,12 +181,4 @@ function AddDataComponent() {
       </Modal >
     </>
   )
-}
-
-export default function AddDataPage() {
-  return (
-    <NativeBaseProvider config={config}>
-      <AddDataComponent />
-    </NativeBaseProvider>
-  );
 };

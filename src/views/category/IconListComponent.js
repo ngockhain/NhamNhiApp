@@ -11,13 +11,13 @@ import {
   useBreakpointValue, Center, NativeBaseProvider, View, HStack
 } from "native-base";
 
-export default function IconShowComponent() {
+export default function IconListComponent() {
 
   const [icons, setIcons] = useState([[{
-    icon: <AddIcon />,
+    icon: <AddIcon/>,
     iconName: "add"
   }, {
-    icon: <ArrowBackIcon />,
+    icon: <ArrowBackIcon/>,
     iconName: "arrow-back"
   }, {
     icon: <ArrowForwardIcon />,
@@ -108,21 +108,24 @@ export default function IconShowComponent() {
     iconName: "delete"
   }, {
     icon: <DeleteIcon />,
-    iconName: "delete"
+    iconName: "delete1"
   }]]);
-  return <Box w="100%">
-    <Text style={{ margin: 3, fontSize: 12 }}>Icon</Text>
-    <View style={{ flex: 1 }}>
-      {icons.map(icon => {
-        return <HStack flex={1} alignItems="center" justifyContent={"space-between"}>
-          {icon.map(item =>
-            <Box _text={{
-              textAlign: "center"
-            }} borderColor="primary.500" borderWidth={item.iconName=="favourite"?1:0} p={2}>
-              {item.icon}
-            </Box>)}
-        </HStack>
-      })}
-    </View>
-  </Box>;
+
+  return (
+    <Box w="100%">
+      <Text style={{ margin: 3, fontSize: 12 }}>Icon</Text>
+      <View style={{ flex: 1 }}>
+        {icons.map((icon, idx) => {
+          return <HStack key={idx} flex={1} alignItems="center" justifyContent={"space-between"}>
+            {icon.map((item, idx1) =>
+              <Box key={`${idx}_${idx1}`} _text={{
+                textAlign: "center"
+              }} borderColor="primary.500" borderWidth={item.iconName == "favourite" ? 1 : 0} p={2}>
+                {item.icon}
+              </Box>)}
+          </HStack>
+        })}
+      </View>
+    </Box>
+  );
 };
