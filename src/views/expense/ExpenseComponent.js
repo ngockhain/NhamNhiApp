@@ -4,13 +4,18 @@ import {
   IconButton, Pressable, Text, Center, Box, StatusBar,
   Divider, NativeBaseProvider, Container, Modal, Button,
   FormControl, Stack, Input, Select, ChevronUpIcon,
-  ChevronDownIcon
+  ChevronDownIcon,
+  View
 } from "native-base";
 import { useForm, Controller } from "react-hook-form";
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Alert } from 'react-native';
+
+import DateInput from '../utils/DateInput';
+import TimeInput from '../utils/TimeInput';
+import NumberInput from '../utils/NumberInput';
 
 export default function ExpenseComponent() {
   const [openAddDataModal, setOpenAddDataModal] = useState(false);
@@ -57,7 +62,7 @@ export default function ExpenseComponent() {
               <Stack w="100%">
                 <HStack flex={1} justifyContent="space-between">
                   {/* ----- 日付 ----- */}
-                  <Controller
+                  {/* <Controller
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
                       <Input width="63%" variant="underlined" size="sm" placeholder="Ngày"
@@ -73,15 +78,13 @@ export default function ExpenseComponent() {
                     )}
                     name="date"
                     defaultValue=""
-                  />
-                  {/* Date Input Contoller */}
-                  {/* <FormControl.ErrorMessage>
-                    {errors.thought?.message}
-                  </FormControl.ErrorMessage> */}
-                  {/* <DateTimePicker value={new Date()} /> */}
+                  /> */}
+                  <View width={"60%"}>
+                    <DateInput />
+                  </View>
 
                   {/* ----- 時間 ----- */}
-                  <Controller
+                  {/* <Controller
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
                       <Input width="33%" variant="underlined" size="sm" placeholder="Giờ"
@@ -97,7 +100,11 @@ export default function ExpenseComponent() {
                     )}
                     name="time"
                     defaultValue=""
-                  />
+                  /> */}
+                  <View width={"30%"}>
+                    <TimeInput />
+                  </View>
+
                 </HStack>
                 {/* ----- 使用タイプ ----- */}
                 <Controller
@@ -128,7 +135,7 @@ export default function ExpenseComponent() {
                 />
 
                 {/* ----- 金額 ----- */}
-                <Controller
+                {/* <Controller
                   control={control}
                   render={({ field: { onChange, onBlur, value } }) => (
                     <Input variant="underlined" size="sm" placeholder="Số tiền"
@@ -144,7 +151,8 @@ export default function ExpenseComponent() {
                   )}
                   name="money"
                   defaultValue=""
-                />
+                /> */}
+                <NumberInput />
 
                 {/* ----- 備考 ----- */}
                 <Controller

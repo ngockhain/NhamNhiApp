@@ -15,9 +15,14 @@ import {
   DrawerContentScrollView,
 } from "@react-navigation/drawer";
 
-import MainPage from "./src/views/mainpage/MainPage";
+import MainPage from "./src/views/home/MainPage";
 import ExpensePage from "./src/views/expense/ExpensePage";
 import CategoryPage from "./src/views/category/CategoryPage";
+
+import { Provider as ReduxProvider } from "react-redux";
+import configureStore from "./src/state/store";
+
+const reduxStore = configureStore(window.REDUX_INITIAL_DATA);
 
 const Drawer = createDrawerNavigator();
 
@@ -162,15 +167,17 @@ export default function App() {
   return (
     <NavigationContainer>
       <NativeBaseProvider>
-        <Box flex={1}>
-          <Drawer.Navigator
-            drawerContent={(props) => <CustomDrawerContent {...props} />}
-          >
-            <Drawer.Screen name="Thống kê" component={MainPage} />
-            <Drawer.Screen name="Thêm dữ liệu" component={ExpensePage} />
-            <Drawer.Screen name="Thêm loại" component={CategoryPage} />
-          </Drawer.Navigator>
-        </Box>
+        <ReduxProvider store={reduxStore}>
+          <Box flex={1}>
+            <Drawer.Navigator
+              drawerContent={(props) => <CustomDrawerContent {...props} />}
+            >
+              <Drawer.Screen name="Thống kê" component={MainPage} />
+              <Drawer.Screen name="Thêm dữ liệu" component={ExpensePage} />
+              <Drawer.Screen name="Thêm loại" component={CategoryPage} />
+            </Drawer.Navigator>
+          </Box>
+        </ReduxProvider>
       </NativeBaseProvider>
     </NavigationContainer>
   );
