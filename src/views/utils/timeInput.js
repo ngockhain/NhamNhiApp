@@ -1,17 +1,30 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Input, Keyboard, View, Icon, HStack } from 'native-base';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { format } from 'date-fns'
 import { Pressable } from 'react-native';
 
-export default function TimeInput() {
+export default function TimeInput(props) {
   const [timeValue, setTimeValue] = useState(new Date());
   const [isFocus, setIsFocus] = useState(false);
 
   const onChangeTime = function (e) {
     setTimeValue(new Date(e.nativeEvent.timestamp));
   }
+
+  const { name, setValue, defaultValue } = props;
+  useEffect(() => {
+    if(defaultValue) {
+      setTimeValue(new Date('2023-01-01 ' + defaultValue));
+    }
+  }, []);
+
+  useEffect(() => {
+    if(setValue) {
+      setValue(name, format(timeValue, 'HH:mm'));
+    }
+  }, [timeValue]);
 
   return (
     <Pressable onPress={() => { setIsFocus(true); }}>
