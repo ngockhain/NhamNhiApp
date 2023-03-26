@@ -25,12 +25,12 @@ const config = {
 };
 
 export default function ExpensePage() {
-  const expenseData = useSelector((state) => state.expensePage??[]);
+  const expenseData = useSelector((state) => state.expensePage ?? []);
 
   const dispatch = useDispatch();
   const addExpense = (expense) => dispatch(expenseOperations.addExpense(expense));
 
-  const expenseDataTest = {
+  const expense = {
     'category_icon': 'car',
     'category_code': '1',
     'category_name': 'Xe cộ',
@@ -41,8 +41,10 @@ export default function ExpensePage() {
     'isNew': true,
   }
 
+  console.log(expenseData);
+
   const expenseList = expenseData.map((expense, idx) => (
-    <ExpenseComponent key={idx} expenseIdx={idx} isNew={expense.isNew}/>
+    <ExpenseComponent key={idx} expenseIdx={idx} isNew={expense.isNew} />
   ));
 
   return (
@@ -61,7 +63,7 @@ export default function ExpensePage() {
       </ScrollView>
 
       <Fab renderInPortal={false} shadow={2} size="lg"
-        onPress={() => { addExpense(expenseDataTest) }}
+        onPress={() => { addExpense({ expense }) }}
         icon={<Icon as={<MaterialCommunityIcons size={4} name="plus" />} />} />
     </NativeBaseProvider>
   )

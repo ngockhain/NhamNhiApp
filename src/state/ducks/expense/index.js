@@ -1,4 +1,4 @@
-import reducer from "./reducers";
+import expenseSlice from "./reducers";
 
 import * as expenseOperations from "./operations";
 import * as expenseSelectors from "./selectors";
@@ -8,4 +8,4 @@ export {
     expenseSelectors,
 };
 
-export default reducer;
+export default expenseSlice;

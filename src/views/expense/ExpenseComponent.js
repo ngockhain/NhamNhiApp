@@ -27,8 +27,8 @@ export default function ExpenseComponent(props = {}) {
   const expenseDetail = useSelector((state) => state.expensePage[expenseIdx]);
 
   const dispatch = useDispatch();
-  const editExpense = (idx, expense) => dispatch(expenseOperations.editExpense(idx, expense));
-  const removeExpense = (idx) => dispatch(expenseOperations.removeExpense(idx));
+  const editExpense = (index, expense) => dispatch(expenseOperations.editExpense({ index, expense }));
+  const removeExpense = (index) => dispatch(expenseOperations.removeExpense({ index }));
 
   const SaveExpenseFunc = () => {
     editExpense(expenseIdx, getValues());
@@ -41,7 +41,7 @@ export default function ExpenseComponent(props = {}) {
   }
 
   useEffect(() => {
-    if(isNew) {
+    if (isNew) {
       setOpenAddDataModal(true);
     }
 

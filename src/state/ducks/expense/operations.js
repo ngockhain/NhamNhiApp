@@ -1,8 +1,7 @@
-import { addExpense, editExpense, removeExpense, fetchData } from "./actions";
+import { addExpense, editExpense, removeExpense } from "./reducers";
 
 export {
     addExpense,
     editExpense,
-    removeExpense,
-    fetchData,
+    removeExpense
 };
