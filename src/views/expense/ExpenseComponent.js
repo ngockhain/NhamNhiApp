@@ -19,24 +19,35 @@ import DateInput from '../utils/DateInput';
 import TimeInput from '../utils/TimeInput';
 import NumberInput from '../utils/NumberInput';
 
+import { formatNumber, createSaveData, createRemoveData } from '../../utils';
+
 export default function ExpenseComponent(props = {}) {
   const [openAddDataModal, setOpenAddDataModal] = useState(false);
   const { control, handleSubmit, getValues, setValue, formState: { errors } } = useForm();
 
   const { expenseIdx, isNew } = props;
-  const expenseDetail = useSelector((state) => state.expensePage[expenseIdx]);
+  const expenseDetail = useSelector((state) => state.expensePage.expense[expenseIdx]);
 
   const dispatch = useDispatch();
   const editExpense = (index, expense) => dispatch(expenseOperations.editExpense({ index, expense }));
   const removeExpense = (index) => dispatch(expenseOperations.removeExpense({ index }));
 
   const SaveExpenseFunc = () => {
-    editExpense(expenseIdx, getValues());
+    // editExpense(expenseIdx, getValues());
+    if (expenseDetail.isNew) {
+      dispatch(expenseOperations.addAsyncExpense(createSaveData('6', getValues(), expenseIdx)));
+    } else {
+      dispatch(expenseOperations.editAsyncExpense(createSaveData('6', getValues(), expenseIdx)));
+    }
     setOpenAddDataModal(false);
   }
 
   const RemoveExpenseFunc = () => {
-    removeExpense(expenseIdx);
+    if (expenseDetail.isNew) {
+      removeExpense(expenseIdx);
+    } else {
+      dispatch(expenseOperations.removeAsyncExpense(createRemoveData('6', getValues(), expenseIdx)));
+    }
     setOpenAddDataModal(false);
   }
 
@@ -47,6 +58,7 @@ export default function ExpenseComponent(props = {}) {
 
     setValue('category_name', expenseDetail.category_name);
     setValue('category_icon', expenseDetail.category_icon);
+    setValue('id', expenseDetail.id);
   }, []);
 
 
@@ -78,17 +90,17 @@ export default function ExpenseComponent(props = {}) {
                 {expenseDetail.category_name}
               </Text>
               <Text fontSize={'sm'} fontWeight="normal" color={"warmGray.300"}>
-                {expenseDetail.expense_memo}
+                {expenseDetail.memo}
               </Text>
             </VStack>
-            <Text fontSize={'md'} fontWeight="medium" color={"warmGray.50"}>{expenseDetail.expense_money} đồng</Text>
+            <Text fontSize={'md'} fontWeight="medium" color={"warmGray.50"}>{formatNumber(expenseDetail.money)} đồng</Text>
           </HStack>
         </HStack>
       </Pressable>
 
       <Modal isOpen={openAddDataModal} onClose={() => setOpenAddDataModal(false)} closeOnOverlayClick={false} avoidKeyboard>
         <Modal.Content>
-          <Modal.CloseButton />
+          {expenseDetail.id != 0 && <Modal.CloseButton />}
           <Modal.Header>Chi tiết</Modal.Header>
           <Modal.Body>
             <FormControl isRequired isInvalid>
@@ -113,8 +125,8 @@ export default function ExpenseComponent(props = {}) {
                     defaultValue=""
                   /> */}
                   <View width={"60%"}>
-                    <DateInput defaultValue={expenseDetail.expense_date}
-                      name={"expense_date"} setValue={setValue} />
+                    <DateInput defaultValue={expenseDetail.date}
+                      name={"date"} setValue={setValue} />
                   </View>
 
                   {/* ----- 時間 ----- */}
@@ -136,8 +148,8 @@ export default function ExpenseComponent(props = {}) {
                     defaultValue=""
                   /> */}
                   <View width={"30%"}>
-                    <TimeInput defaultValue={expenseDetail.expense_time}
-                      name={"expense_time"} setValue={setValue} />
+                    <TimeInput defaultValue={expenseDetail.time}
+                      name={"time"} setValue={setValue} />
                   </View>
 
                 </HStack>
@@ -189,8 +201,8 @@ export default function ExpenseComponent(props = {}) {
                   name="money"
                   defaultValue=""
                 /> */}
-                <NumberInput defaultValue={expenseDetail.expense_money}
-                  name="expense_money" setValue={setValue} />
+                <NumberInput defaultValue={expenseDetail.money}
+                  name="money" setValue={setValue} />
 
                 {/* ----- 備考 ----- */}
                 <Controller
@@ -207,8 +219,8 @@ export default function ExpenseComponent(props = {}) {
                       value={value}
                     />
                   )}
-                  name="expense_memo"
-                  defaultValue={expenseDetail.expense_memo}
+                  name="memo"
+                  defaultValue={expenseDetail.memo}
                 />
               </Stack>
             </FormControl>

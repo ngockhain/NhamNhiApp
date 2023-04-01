@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Input, Keyboard, View, Icon, HStack } from 'native-base';
-import { formatNumber } from '../../utils';
+import { formatNumber, deFormatNumber } from '../../utils';
 
 export default function NumberInput(props) {
 

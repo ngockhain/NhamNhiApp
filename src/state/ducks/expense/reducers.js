@@ -1,37 +1,6 @@
-// import { combineReducers } from "redux";
-// import * as types from "./types";
-// import { createReducer } from "../../utils";
-
-// const initialState = [];
-
-// const expenseReducer = createReducer(initialState)({
-//   [types.FETCH_COMPLETED]: (state, action) => action.payload.expense,
-//   [types.ADD]: (state, action) => {
-//     const { expense } = action.payload;
-//     return [...state, expense];
-//   },
-//   [types.EDIT]: (state, action) => {
-//     const { index, expense } = action.payload;
-//     return [
-//       ...state.slice(0, index),
-//       expense,
-//       ...state.slice(index + 1)
-//     ];
-//   },
-//   [types.REMOVE]: (state, action) => {
-//     const { index } = action.payload;
-//     return [
-//       ...state.slice(0, index),
-//       ...state.slice(index + 1)
-//     ];
-//   }
-// });
-
-// export default expenseReducer;
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { createReducer } from "../../utils";
-import { login } from './selectors';
+import { fetchAllExpense, addAsyncExpense, editAsyncExpense, removeAsyncExpense } from './actions';
 
 const initialState = [];
 
@@ -44,47 +13,153 @@ const expenseSlice = createSlice({
       console.log(action);
       console.log('%c ■■■■■■ Add expense data ■■■■■', "color: orange;");
       const { expense } = action.payload;
-      return [...state, expense];
+      return {...state, expense: [...state.expense, expense]};
     },
     editExpense: (state, action) => {
-      const { index, expense } = action.payload;
-      console.log('%c ■■■■■■ Edit expense data ■■■■■', "color: orange;");
-      console.log(action);
-      console.log('%c ■■■■■■ Edit expense data ■■■■■', "color: orange;");
-      return [
-        ...state.slice(0, index),
-        expense,
-        ...state.slice(index + 1)
-      ];
+      // const { index, expense } = action.payload;
+      // console.log('%c ■■■■■■ Edit expense data ■■■■■', "color: orange;");
+      // console.log(action);
+      // console.log('%c ■■■■■■ Edit expense data ■■■■■', "color: orange;");
+      // return {
+      //   ...state,
+      //   expense: [
+      //     ...state.expense.slice(0, index),
+      //     expense,
+      //     ...state.expense.slice(index + 1)
+      //   ]
+      // };
     },
     removeExpense: (state, action) => {
       const { index } = action.payload;
       console.log('%c ■■■■■■ Remove expense data ■■■■■', "color: orange;");
       console.log(action);
       console.log('%c ■■■■■■ Remove expense data ■■■■■', "color: orange;");
-      return [
-        ...state.slice(0, index),
-        ...state.slice(index + 1)
-      ];
+      return {
+        ...state,
+        expense: [
+          ...state.expense.slice(0, index),
+          ...state.expense.slice(index + 1)
+        ]
+      };
     },
   },
   extraReducers: (builder) => {
-    // Start login request
-    builder.addCase(login.pending, (state) => {
-      state.isLoading = true;
+    builder.addCase(fetchAllExpense.pending, (state) => {
+      return (state = {
+        ...state,
+        isLoading: true,
+        expense: [],
+      })
     });
-
     // Request successful
-    builder.addCase(login.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.isAuthenticated = true;
-      state.currentUser = action.payload;
+    builder.addCase(fetchAllExpense.fulfilled, (state, action) => {
+      const records = action.payload.records ?? [];
+      if(records) {
+        records.forEach((x, idx) => { Object.keys(x).forEach(k => { records[idx][k] = records[idx][k].value??'' }) });
+      }
+
+      return (
+        state = {
+          ...state,
+          isLoading: false,
+          expense: records
+        }
+      )
+    });
+    // Request error
+    builder.addCase(fetchAllExpense.rejected, (state, action) => {
+      return (
+        state = {
+          ...state,
+          isLoading: false,
+        }
+      )
     });
 
+    // Add Async Expense
+    builder.addCase(addAsyncExpense.pending, (state) => {
+      return (state = {
+        ...state,
+        isLoading: true,
+      })
+    });
+    // Request successful
+    builder.addCase(addAsyncExpense.fulfilled, (state, action) => {
+      return (state = {
+        ...state,
+        isLoading: false,
+        expense: [
+          ...state.expense.slice(0, action.payload.idx),
+          action.payload.raw_data, 
+          ...state.expense.slice(action.payload.idx + 1)
+        ]
+      })
+    });
     // Request error
-    builder.addCase(login.rejected, (state, action) => {
-      state.isLoading = false;
-      state.errorMessage = action.payload.message;
+    builder.addCase(addAsyncExpense.rejected, (state, action) => {
+      return (
+        state = {
+          ...state,
+          isLoading: false,
+        }
+      )
+    });
+    
+    // Add Async Expense
+    builder.addCase(editAsyncExpense.pending, (state) => {
+      return (state = {
+        ...state,
+        isLoading: true,
+      })
+    });
+    // Request successful
+    builder.addCase(editAsyncExpense.fulfilled, (state, action) => {
+      return (state = {
+        ...state,
+        isLoading: false,
+        expense: [
+          ...state.expense.slice(0, action.payload.idx),
+          action.payload.raw_data, 
+          ...state.expense.slice(action.payload.idx + 1)
+        ]
+      })
+    });
+    // Request error
+    builder.addCase(editAsyncExpense.rejected, (state, action) => {
+      return (
+        state = {
+          ...state,
+          isLoading: false,
+        }
+      )
+    });
+
+    // Add Async Expense
+    builder.addCase(removeAsyncExpense.pending, (state) => {
+      return (state = {
+        ...state,
+        isLoading: true,
+      })
+    });
+    // Request successful
+    builder.addCase(removeAsyncExpense.fulfilled, (state, action) => {
+      return (state = {
+        ...state,
+        isLoading: false,
+        expense: [
+          ...state.expense.slice(0, action.payload.idx),
+          ...state.expense.slice(action.payload.idx + 1)
+        ]
+      })
+    });
+    // Request error
+    builder.addCase(removeAsyncExpense.rejected, (state, action) => {
+      return (
+        state = {
+          ...state,
+          isLoading: false,
+        }
+      )
     });
   },
 });

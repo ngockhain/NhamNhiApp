@@ -1,5 +1,5 @@
 import { legacy_createStore as createStore, applyMiddleware, combineReducers } from "redux";
-// import thunkMiddleware from "redux-thunk";
+import thunkMiddleware from "redux-thunk";
 import * as reducers from "./ducks";
 
 export default function configureStore( initialState ) {
@@ -9,6 +9,7 @@ export default function configureStore( initialState ) {
         rootReducer,
         initialState,
         applyMiddleware(
+            thunkMiddleware
         ),
     );
 }
