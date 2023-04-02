@@ -47,10 +47,6 @@ export default function ExpensePage() {
     'id': 0
   }
 
-  useEffect(() => {
-    dispatch(expenseOperations.fetchAllExpense());
-  }, []);
-
   return (
     <NativeBaseProvider config={config}>
       <ScrollView stickyHeaderIndices={[0]} flex="1"

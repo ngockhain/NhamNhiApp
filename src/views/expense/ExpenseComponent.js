@@ -46,7 +46,7 @@ export default function ExpenseComponent(props = {}) {
     if (expenseDetail.isNew) {
       removeExpense(expenseIdx);
     } else {
-      dispatch(expenseOperations.removeAsyncExpense(createRemoveData('6', getValues(), expenseIdx)));
+      dispatch(expenseOperations.removeAsyncExpense(createRemoveData('6', expenseDetail, expenseIdx)));
     }
     setOpenAddDataModal(false);
   }
