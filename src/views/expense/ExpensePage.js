@@ -36,9 +36,7 @@ export default function ExpensePage() {
   const addExpense = (expense) => dispatch(expenseOperations.addExpense(expense));
 
   const expense = {
-    'category_icon': 'car',
-    'category_code': '1',
-    'category_name': 'Xe cộ',
+    'category_id': '1',
     'date': '2023/03/11',
     'time': '11:30',
     'money': '23000',

@@ -27,6 +27,13 @@ export default function ExpenseComponent(props = {}) {
 
   const { expenseIdx, isNew } = props;
   const expenseDetail = useSelector((state) => state.expensePage.expense[expenseIdx]);
+  const categoryList = useSelector((state) => state.categoryPage.category);
+  const categoryInfors = useSelector((state) => state.categoryPage.category.filter(x => x.id == expenseDetail.category_id));
+
+  var categoryInfor = {};
+  if(categoryInfors) {
+    categoryInfor = categoryInfors[0] ?? {};
+  }
 
   const dispatch = useDispatch();
   const editExpense = (index, expense) => dispatch(expenseOperations.editExpense({ index, expense }));
@@ -56,8 +63,6 @@ export default function ExpenseComponent(props = {}) {
       setOpenAddDataModal(true);
     }
 
-    setValue('category_name', expenseDetail.category_name);
-    setValue('category_icon', expenseDetail.category_icon);
     setValue('id', expenseDetail.id);
   }, []);
 
@@ -70,24 +75,27 @@ export default function ExpenseComponent(props = {}) {
     <>
       <Pressable m={1} onPress={() => setOpenAddDataModal(true)}>
         <HStack
-          bg={{
-            linearGradient: {
-              colors: ['lightBlue.300', 'violet.800'],
-              start: [0, 0],
-              end: [1, 0]
-            }
-          }} p="3" space={3}
+          // bg={{
+          //   linearGradient: {
+          //     // colors: ['lightBlue.300', `#${categoryInfor.color_hex??'5b21b6'}`],
+          //     colors: [`#${categoryInfor.color_hex??'5b21b6'}`],
+          //     start: [0, 0],
+          //     end: [1, 0]
+          //   }
+          // }}
+          bg={`#${categoryInfor.color_hex??'5b21b6'}`}
+          p="3" space={3}
           alignItems="center"
           rounded="xl">
           <Icon
             color={"warmGray.100"}
             size="10"
-            as={<MaterialCommunityIcons name={expenseDetail.category_icon} />}
+            as={<MaterialCommunityIcons name={categoryInfor.icon} />}
           />
           <HStack alignItems="center" justifyContent="space-between" flex={1}>
             <VStack>
               <Text fontSize={'md'} fontWeight="medium" color={"warmGray.50"}>
-                {expenseDetail.category_name}
+                {categoryInfor.name}
               </Text>
               <Text fontSize={'sm'} fontWeight="normal" color={"warmGray.300"}>
                 {expenseDetail.memo}
@@ -101,7 +109,7 @@ export default function ExpenseComponent(props = {}) {
       <Modal isOpen={openAddDataModal} onClose={() => setOpenAddDataModal(false)} closeOnOverlayClick={false} avoidKeyboard>
         <Modal.Content>
           {expenseDetail.id != 0 && <Modal.CloseButton />}
-          <Modal.Header>Chi tiết</Modal.Header>
+          <Modal.Header>Chi tiết chi tiêu</Modal.Header>
           <Modal.Body>
             <FormControl isRequired isInvalid>
               <Stack w="100%">
@@ -161,26 +169,20 @@ export default function ExpenseComponent(props = {}) {
                       selectedValue={value}
                       onValueChange={(itemValue) => {
                         onChange(itemValue);
-                        setValue('category_name', 'Phương tiện vận chuyển');
-                        setValue('category_icon', 'car');
                       }}
-                      placeholder="Loại chi tiêu"
+                      // placeholder="Loại chi tiêu"
                       _selectedItem={{
                         bg: "blueGray.700",
                         // endIcon: <CheckIcon size="2" />
                       }}
                       dropdownOpenIcon={<ChevronUpIcon size="3" />}
                       dropdownCloseIcon={<ChevronDownIcon size="3" />}>
-                      <Select.Item label="UX Research" value="0" />
-                      <Select.Item label="Web Development" value="1" />
-                      <Select.Item label="Cross Platform Development" value="2" />
-                      <Select.Item label="UI Designing" value="3" />
-                      <Select.Item label="Backend Development" value="4" />
+                      {categoryList && categoryList.map((c, idx) => <Select.Item key={idx} label={c.name} value={c.id} />)}
                     </Select>
                   )}
-                  name="category_code"
+                  name="category_id"
                   // rules={{ required: 'Field is required' }}
-                  defaultValue={expenseDetail.category_code}
+                  defaultValue={expenseDetail.category_id}
                 />
 
                 {/* ----- 金額 ----- */}

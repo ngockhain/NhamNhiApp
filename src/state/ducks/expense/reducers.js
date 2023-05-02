@@ -105,7 +105,7 @@ const expenseSlice = createSlice({
       )
     });
     
-    // Add Async Expense
+    // Edit Async Expense
     builder.addCase(editAsyncExpense.pending, (state) => {
       return (state = {
         ...state,
@@ -134,7 +134,7 @@ const expenseSlice = createSlice({
       )
     });
 
-    // Add Async Expense
+    // Remove Async Expense
     builder.addCase(removeAsyncExpense.pending, (state) => {
       return (state = {
         ...state,

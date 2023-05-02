@@ -1,131 +1,49 @@
 import React, { useState } from "react";
 import {
-  Box, Text, MoonIcon, SunIcon, CheckIcon,
-  CircleIcon, ArrowBackIcon, AddIcon, ArrowForwardIcon,
-  ArrowUpIcon, ArrowDownIcon, CheckCircleIcon, ChevronDownIcon,
-  ChevronLeftIcon, ChevronRightIcon, ChevronUpIcon, CloseIcon,
-  SmallCloseIcon, HamburgerIcon, InfoIcon, InfoOutlineIcon,
-  MinusIcon, QuestionIcon, QuestionOutlineIcon, SearchIcon,
-  WarningIcon, WarningTwoIcon, ThreeDotsIcon, WarningOutlineIcon,
-  ShareIcon, PlayIcon, FavouriteIcon, DeleteIcon, VStack, FlatList,
-  useBreakpointValue, Center, NativeBaseProvider, View, HStack
+  Box, Text, HStack, Icon, IconButton, ScrollView
 } from "native-base";
 
-export default function IconListComponent() {
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-  const [icons, setIcons] = useState([[{
-    icon: <AddIcon/>,
-    iconName: "add"
-  }, {
-    icon: <ArrowBackIcon/>,
-    iconName: "arrow-back"
-  }, {
-    icon: <ArrowForwardIcon />,
-    iconName: "arrow-forward"
-  }, {
-    icon: <ArrowUpIcon />,
-    iconName: "arrow-up"
-  }, {
-    icon: <ArrowDownIcon />,
-    iconName: "arrow-down"
-  }, {
-    icon: <CheckIcon />,
-    iconName: "check"
-  }, {
-    icon: <CheckCircleIcon />,
-    iconName: "check-circle"
-  }, {
-    icon: <ChevronDownIcon />,
-    iconName: "chevron-down"
-  }], [{
-    icon: <ChevronLeftIcon />,
-    iconName: "chevron-left"
-  }, {
-    icon: <ChevronRightIcon />,
-    iconName: "chevron-right"
-  }, {
-    icon: <ChevronUpIcon />,
-    iconName: "chevron-up"
-  }, {
-    icon: <CircleIcon />,
-    iconName: "circle"
-  }, {
-    icon: <CloseIcon />,
-    iconName: "close"
-  }, {
-    icon: <SmallCloseIcon />,
-    iconName: "small-close"
-  }, {
-    icon: <HamburgerIcon />,
-    iconName: "menu"
-  }, {
-    icon: <InfoIcon />,
-    iconName: "info"
-  }], [{
-    icon: <InfoOutlineIcon />,
-    iconName: "info-outline"
-  }, {
-    icon: <MinusIcon />,
-    iconName: "minus"
-  }, {
-    icon: <MoonIcon />,
-    iconName: "moon"
-  }, {
-    icon: <QuestionIcon />,
-    iconName: "question"
-  }, {
-    icon: <QuestionOutlineIcon />,
-    iconName: "question-outline"
-  }, {
-    icon: <SearchIcon />,
-    iconName: "search"
-  }, {
-    icon: <SunIcon />,
-    iconName: "sun"
-  }, {
-    icon: <WarningIcon />,
-    iconName: "warning-1"
-  }], [{
-    icon: <WarningTwoIcon />,
-    iconName: "warning-2"
-  }, {
-    icon: <WarningOutlineIcon />,
-    iconName: "warning-outline"
-  }, {
-    icon: <ThreeDotsIcon />,
-    iconName: "three-dots"
-  }, {
-    icon: <ShareIcon />,
-    iconName: "share"
-  }, {
-    icon: <PlayIcon />,
-    iconName: "play"
-  }, {
-    icon: <FavouriteIcon />,
-    iconName: "favourite"
-  }, {
-    icon: <DeleteIcon />,
-    iconName: "delete"
-  }, {
-    icon: <DeleteIcon />,
-    iconName: "delete1"
-  }]]);
+export default function IconListComponent(props = {}) {
+
+  const iconlist = [
+    [{name:'car'}, {name:'airplane'}, {name:'bank'}, {name:'coffee'}, {name:'train'}]
+    , [{name:'basket'}, {name:'arm-flex'}, {name:'baby-carriage'}, {name:'badminton'}, {name:'cart'}]
+    , [{name:'cat'}, {name:'gamepad-variant'}, {name:'hamburger'}, {name:'island'}, {name:'moped'}]
+    , [{name:'movie'}, {name:'piggy-bank'}, {name:'home-account'}, {name:'teddy-bear'}, {name:'human-male-male'}]
+    , [{name:'fuel'}, {name:'book-account'}, {name:'book-open'}, {name:'book-variant-multiple'}, {name:'hospital-box'}]
+  ];
+
+  const { name, setValue, defaultValue } = props;
+  const [selectedIcon, setSelectedIcon] = useState(defaultValue??'car');
 
   return (
-    <Box w="100%">
-      <Text style={{ margin: 3, fontSize: 12 }}>Icon</Text>
-      <View style={{ flex: 1 }}>
-        {icons.map((icon, idx) => {
+    <Box w="100%" maxHeight={250}>
+      <Text style={{ margin: 3, fontSize: 12, fontWeight: 'bold' }}>Icon</Text>
+      <ScrollView style={{ flex: 1, padding: 3 }}>
+        {iconlist.map((icon, idx) => {
           return <HStack key={idx} flex={1} alignItems="center" justifyContent={"space-between"}>
             {icon.map((item, idx1) =>
               <Box key={`${idx}_${idx1}`} _text={{
                 textAlign: "center"
-              }} borderColor="primary.500" borderWidth={item.iconName == "favourite" ? 1 : 0} p={2}>
-                {item.icon}
+              }} borderColor="warmGray.600" borderWidth={item.name == selectedIcon ? 3 : 0} p={1}>
+                <IconButton
+                  size={"xs"} _pressed={{bg:''}} _hover={{bg:''}}
+                  onPressOut={() => { setSelectedIcon(item.name); setValue(name, item.name); }}
+                  icon={
+                    <Icon
+                    color={"warmGray.500"}
+                    size="8"
+                    as={<MaterialCommunityIcons name={item.name} />}
+                  />
+                  }
+                />
+                
               </Box>)}
           </HStack>
         })}
-      </View>
+      </ScrollView>
     </Box>
   );
 };
